@@ -1,0 +1,315 @@
+<!-- Service Log Page -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset = "UTF-8">
+    <meta http-equiv = "X-UA-Compatible" content = "IE=edge">
+    <meta name = "viewport" content = "width=device-width, initial-scale=1.0">
+    <!-- Link the CSS page from the static folder -->
+    <link rel = "stylesheet" type = "text/css" href = "{{ url_for('static', filename = 'packet-style.css')}}">
+    <script type="module" src="/static/scripts/main.js"></script>
+    <title>Service Log | STEM</title>
+</head>
+
+<body>
+    <header>
+        <h2 class = 'nav-logo'>STEM</h2>
+        <nav class = 'navigation'>
+            <div class = 'center'>
+                <a id = 'navigation-home' href = '/home'>Information</a>
+                <a id = 'navigation-service-log' href = '/service-log'>Service Log</a>
+                <a id = 'navigation-report-form' href = '/report-form'>Report Form</a>
+            </div>
+            <div class = 'right'>
+                <a id = 'navigation-account' href = '/account'>Account</a>
+                <a id = 'navigation-logout' href = '/logout'>Logout</a>
+            </div>
+        </nav>
+    </header>
+
+    <div class = 'page-layout'>
+        <!-- Message pop up -->
+        <div class = "message-popup">
+            {% with messages = get_flashed_messages(with_categories = true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                {% if category == 'error' %}
+                <!-- Error class, show message -->
+                <div class = 'error'>
+                    <span class = 'icon-error'><ion-icon name="warning-outline"></ion-icon></span>
+                    <h2>{{message}}</h2>
+                </div>
+                <!-- Success class, show message -->
+                {% elif category == 'success' %}
+                <div class = 'success'>
+                    <span class = 'icon-success'><ion-icon name="checkmark-circle-outline"></ion-icon></span>
+                    <h2>{{message}}</h2>
+                </div>
+                {% endif %}
+                {% endfor %}
+            {% endif %}
+            {% endwith %}
+        </div>
+
+        <div class = 'second-page'>
+            <!-- class = 'form-anticlear' --> <!-- DEVELOPING USE ONLY -->
+            <form method = 'POST' autocomplete = "off" novalidate = "novalidate">
+
+                <!-- Second page inforamtion -->
+                <div class = 'information'>
+                    <div class = 'title-2'>
+                        <h2>STEM Program</h2>
+                        <h2>Coummunity Service Log</h2>
+                    </div>
+
+                    <!-- User's full name -->
+                    <div class = 'user-name'>
+                        <p><b>Full Name:</b> <u>{{ first_name }}  {{ last_name }} </u></p>
+                    </div>
+
+                    <!-- User's graduation year -->
+                    <div class = 'user-year'>
+                        <p><b>Expected Graduation Year:</b> <u>{{ graduation_year }}</u></p>
+                    </div>
+
+                    <!-- Title of the table -->
+                    <div class = 'table-title'>
+                        <b><u>Record of Hours</u></b>
+                    
+                    <!-- Summary of the table -->
+                    <div class = 'table-information'>
+                        <p>This section must be completed each time service hours are fulfilled and verified by the supervising organization or individual.
+                            It is the student’s responsibility to maintain verification of all community service hours and submit this form along with
+                            all corresponding activity reports to the appropriate instructor or program coordinator.</p>
+                    </div>
+
+                    <!-- Table (input information)-->
+                    <table class = 'table-inputbox'>
+                        <tr>
+                            <!-- Date of Service Header and input box -->
+                            <th class = 'date-input-box'>
+                                <div class = "header-label">Date of Service</div>
+                                <input
+                                class = 'date-int'
+                                type = 'date' 
+                                id = 'serviceDate' 
+                                name = 'serviceDate' 
+                                maxlength = '8'
+                                value = '{{ cached_service_date }}'
+                                required>
+                            </th>
+
+                            <!-- Organization Header and input box -->
+                            <th>
+                                <div class = "header-label">Organization</div>
+                                <textarea 
+                                class = 'input'
+                                id = 'organization' 
+                                name = 'organization' 
+                                maxlength = '100'
+                                placeholder = 'Enter your text'
+                                >{{ cached_organization }}</textarea>
+                            </th>
+
+                            <!-- Brief Description of Activity Header and input box -->
+                            <th>
+                                <div class = "header-label">Brief Description of Activity</div>
+                                <textarea 
+                                class = 'input'
+                                id = 'briefDescription' 
+                                name = 'briefDescription' 
+                                maxlength = '300'
+                                placeholder = 'Enter your text'
+                                >{{ cached_brief_description }}</textarea>
+                            </th>
+
+                            <!-- Hours Earned Header and input box -->
+                            <th class = 'hours-input-box'>
+                                <div class = "header-label">Hours Earned</div>
+                                <input
+                                class = 'hours-int'
+                                type = 'integer' 
+                                id = 'hoursEarned' 
+                                name = 'hoursEarned' 
+                                maxlength = '4'
+                                placeholder = 'Enter a number'
+                                value = '{{ cached_hours_earned }}'
+                                required>
+                            </th>
+                        </tr>
+                    </table>
+
+                    <!-- Add Information to the table button -->
+                    <button type = 'submit' class = 'btn' value = 'None'><span>Add Information </span></button>
+                    
+                    <!-- Have an informational section for the window view -->
+                    <div class = 'window-information'><p>• If you wish to edit any information in the table below, make changes directly in the text box then scroll down to the bottom of the page
+                         and click the Update Information button.</p> 
+                         <p>• If you want to delete a row, remove all the information from the text boxes and scroll down and click Update Information.</p>
+                         <p>• In the Report Form column, click the arrow to take you directly to the linked report form. You could also remember the number, select Report Form on the navigation bar, and input the number on the next screen.</p></div>
+                    </div>
+                
+                <!-- Table (show informatmion) -->
+                <div class = "tableWindow">
+                    <table class = "table">
+
+                        <tr>
+                            <th><div class="header-label">Date of Service</div></th>
+                            <th><div class="header-label">Organization</div></th>
+                            <th><div class="header-label">Brief Description of Activity</div></th>
+                            <th><div class="header-label">Hours Earned</div></th>
+                            <th><div class="header-label">Report Form</div></th>
+                        </tr>
+
+                        <tbody>
+                            {% for table in reversed_data %}
+                                <tr>
+                                    <td class = 'show_date' width = "70">
+                                        <textarea
+                                        type = 'date' 
+                                        class = 'ShowServiceDate'
+                                        id = 'ShowServiceDate-{{ table.id }}' 
+                                        name = 'ShowServiceDate-{{ table.id }}'  
+                                        maxlength = '10'
+                                        placeholder = 'Enter the service date'
+                                        required
+                                        >{{ table.service_date }}</textarea></td>
+
+                                    <td class = 'show_org'>
+                                        <textarea
+                                        type = 'text' 
+                                        id = 'ShowOrganization-{{ table.id }}' 
+                                        name = 'ShowOrganization-{{ table.id }}'  
+                                        maxlength = '75'
+                                        placeholder = 'Enter the organization'
+                                        required
+                                        >{{ table.organization }}</textarea></td>
+
+                                    <td class = 'show_descrip'>
+                                        <textarea
+                                        type = 'text' 
+                                        id = 'ShowBriefDescription-{{ table.id }}'  
+                                        name = 'ShowBriefDescription-{{ table.id }}'  
+                                        maxlength = '300'
+                                        placeholder = 'Enter a brief description'
+                                        required
+                                        >{{ table.brief_description }}</textarea></td>
+
+                                    <td class = 'show_hours' width = "70">
+                                        <textarea
+                                        type = 'integer' 
+                                        class = 'ShowHoursEarned'
+                                        id = 'ShowHoursEarned-{{ table.id }}' 
+                                        name = 'ShowHoursEarned-{{ table.id }}' 
+                                        maxlength = '4'
+                                        placeholder = 'Enter a number'
+                                        required
+                                        >{{ table.hours_earned }}</textarea></td>
+
+                                    <td class = 'show_ID' width = "70">
+                                        <textarea
+                                        type = 'integer' 
+                                        class = 'ShowID'
+                                        id = 'ShowID' 
+                                        name = 'ShowID' 
+                                        readonly
+                                        >     {{ table.id }}</textarea>
+
+
+                                        <!-- Arrow button with ID attached -->
+                                        <div class = 'report-number-button'>
+                                            <button 
+                                            type = 'submit' 
+                                            class = 'reportButton'
+                                            name = 'reportButton' 
+                                            id = 'reportButton' 
+                                            value = 'button-{{ table.id }}'>
+                                            <span class = 'icon-foward-arrow'><ion-icon name="arrow-forward-outline"></ion-icon></button></span>
+                                        </div>
+
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Update information in the table button -->
+                <div class = 'center'>
+                    <button type = 'submit' class = 'btn-2'>Update Information</button>
+                </div>
+
+                <!-- Continued inforamtion -->
+                <div class = 'cont_information'>
+
+                    <!-- Select a program -->
+                    <form method = "POST">
+                        <div class = 'program-information'>
+                            <label for = "select"><b>Which STEM Program are you completing?</b></label>
+
+                            <select class = "select_program" name = "select_program" id = "select_program" onchange = 'if(this.value != 0) { this.form.submit();}'>
+                                <option value = "Recognition Level 1">Recognition Level 1</option>
+                                <option value = "Recognition Level 2">Recognition Level 2</option>
+                                <option value = "Recognition Level 3">Recognition Level 3</option>
+                                <option hidden selected value = "selection">{{ program_choice }}</option>
+                            </select>
+                        </div>
+                    </form>
+                    
+                    <!-- Verify the information is correct -->
+                    <div class = 'verify'>
+                        <p><b>I verify that this log and reports are a true and accurate record of my voluntary community service hours.</b></p>
+                    </div>
+
+                    <!-- Total hours earned -->
+                    <div class = 'total-hours'>
+                        <p><b>Total Hours:</b> <u>{{ hours_counter }}</u></p>
+                    </div>
+
+                    <!-- Total hours remaining -->
+                    <div class = 'remaining-hours'>
+                        <p><b>Hours Needed:</b> <u>{{ remaining_hours }}</u></p>
+                    </div>
+
+                    <!-- Student's digital signature -->
+                    <div class = 'signature'>
+                        <p><b>Signature:</b> <u>{{ first_name }}  {{ last_name }}</u></p>
+                    </div>
+
+                    <!-- The date the goal was reached -->
+                    <div class = 'last-save'>
+                        <p><b>Last Saved at:</b> <u>{{ last_save }}</u></p>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Be able to scroll down further -->
+    <div class = 'invisable-block'></div>
+
+    <!-- Save the scroll location on page reload -->
+    <script> 
+        var isError = document.querySelector('.error');
+        if (isError) {
+            document.body.scrollTop = 0; // For Safari
+            document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+            localStorage.setItem('scrollpos', window.scrollY);
+        }
+        
+        document.addEventListener("DOMContentLoaded", function(event) { 
+            var scrollpos = localStorage.getItem('scrollpos');
+            if (scrollpos) window.scrollTo(0, scrollpos);
+        });
+
+        window.onbeforeunload = function(e) {
+            localStorage.setItem('scrollpos', window.scrollY);
+        };
+    </script>
+
+    <!-- Ion Icons -->
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!-- Home Page -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset = "UTF-8">
+    <meta http-equiv = "X-UA-Compatible" content = "IE=edge">
+    <meta name = "viewport" content = "width=device-width, initial-scale=1.0">
+    <!-- Link the CSS page from the static folder -->
+    <link rel = "stylesheet" type = "text/css" href = "{{ url_for('static', filename = 'packet-style.css')}}">
+    <script type="module" src="/static/scripts/main.js"></script>
+    <title>Home | STEM</title>
+</head>
+
+<body>
+    <header>
+        <h2 class = 'nav-logo'>STEM</h2>
+        <nav class = 'navigation'>
+            <div class = 'center'>
+                <a id = 'navigation-home' href = '/home'>Information</a>
+                <a id = 'navigation-service-log' href = '/service-log'>Service Log</a>
+                <a id = 'navigation-report-form' href = '/report-form'>Report Form</a>
+            </div>
+            <div class = 'right'>
+                <a id = 'navigation-account' href = '/account'>Account</a>
+                <a id = 'navigation-logout' href = '/logout'>Logout</a>
+            </div>
+        </nav>
+    </header>
+
+    <div class = 'page-layout'>
+        <div class = first-page>
+
+            <!-- Page heading-->
+            <div class = 'align-left'>
+                <h2>{{ first_name }}  {{ last_name }}</h2>
+            </div>
+
+            <div class = 'align-right'>
+                <h2>{{ current_time }}</h2>
+            </div>
+
+            <!-- First page inforamtion -->
+            <div class = 'information'>
+                <div class = 'title'>
+                    <h2>STEM Community Service</h2>
+                </div>
+
+                <!-- Information in first part -->
+                <div class = 'first-part-info'>
+                    <p><b><i>Participants:</i></b> The community service requirement for this academic program is designed
+                        to encourage character development, civic engagement, and practical, real-world experience in STEM-related
+                        fields. The service component supports program and classroom goals by involving students directly in their
+                        local STEM communities. Students who participate are expected to document their service through a service
+                        log and a written activity report describing their contributions. Community service is defined as a
+                        voluntary contribution of time and/or effort to support school or community members and may be completed
+                        during the academic year, summer break, or holiday periods. Students may fulfill this requirement through
+                        a variety of opportunities, including family-supported volunteering, youth organizations, or independent
+                        service activities. All service experiences should have a clear connection to STEM.</p>
+                </div>
+
+                <!-- Information in second part -->
+                <div class = 'second-part-info'>
+                    <b><i>Program Requirements:</i></b>
+                    <p>• Recognition Level 1 – a minimum of ...</p>
+                    <p>• Recognition Level 2 – a minimum of ...</p>
+                    <p>• Recognition Level 3 – a minimum of ...</p>
+
+                <!-- Information in second part continued -->
+                <div class = 'second-part-continued'>
+                    <p>Students may begin accumulating service hours upon entry into the program. All required service must be completed
+                        by a specified deadline during the student’s graduating year. A community service log must be submitted along with a corresponding
+                        activity report for each service activity listed. Students are responsible for ensuring that each activity includes
+                        a clear application of STEM principles and receives approval from an appropriate instructor or program supervisor.</p>
+                </div>
+
+                <!-- Information in third part -->
+                <div class = 'third-part-info'>
+                    <b><i>Packet Contents:</i></b>
+                    <p>• Community Service Opportunities</p>
+                    <p>• <a href = '/service-log'>Community Service Log</a></p>
+                    <p>• <a href = '/report-form'>Activity Report Form</a></p>
+                </div>
+
+                <!-- Information in fourth part -->
+                <div class = 'fourth-part-info'>
+                    <b><i>Questions?</i></b>
+                    <p>Any questions about the community service can be directed to the program administrator.</p>
+                </div>
+
+                <!-- Address + other info at bottom -->
+                <div class = 'footer'>
+                    <p>Program Address</p>
+                    <p>City, State ZIP</p>
+                    <p>Phone Number</p>
+                    <p>Email Address</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Be able to scroll down further -->
+    <div class = 'invisable-block'></div>
+
+</body>
+</html>

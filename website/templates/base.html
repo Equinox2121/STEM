@@ -1,0 +1,26 @@
+<!-- Base Page -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset = "UTF-8">
+    <meta http-equiv = "X-UA-Compatible" content = "IE=edge">
+    <meta name = "viewport" content = "width=device-width, initial-scale=1.0">
+    <!-- Link the CSS page from the static folder -->
+    <link rel = "stylesheet" type = "text/css" href = "{{ url_for('static', filename = 'register-style.css')}}">
+    <script type="module" src="/static/scripts/main.js"></script>
+    <!-- Add icon that shows up on tab -->
+    <link rel="icon" type="image/png" href="website\templates\favicon-32x32.png" sizes="32x32" />
+    <title>Home | STEM</title>
+</head>
+
+<body>
+    <header>
+        <h2 class = 'nav-logo'>STEM</h2>
+        <nav class = 'navigation'>
+            <button class = 'btnRegister-popup' onclick = "window.location.href = '/register';">Register</button>
+            <button class = 'btnLogin-popup' onclick = "window.location.href = '/login';">Login</button>
+        </nav>
+    </header>
+    <div class = "Stem-Logo"></div>
+</body>
+</html>

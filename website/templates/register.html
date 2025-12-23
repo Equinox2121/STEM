@@ -1,0 +1,261 @@
+<!-- Register Page #1 (Information For Account) -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset = "UTF-8">
+    <meta http-equiv = "X-UA-Compatible" content = "IE=edge">
+    <meta name = "viewport" content = "width=device-width, initial-scale=1.0">
+    <!-- Link the CSS file from the static folder -->
+    <link rel = "stylesheet" type = "text/css" href = "{{ url_for('static', filename = 'register-style.css')}}">
+    <script type="module" src="/static/scripts/main.js"></script>
+    <title>Register | STEM</title>
+</head>
+
+<body>
+    <header>
+        <h2 class = 'nav-logo'>STEM</h2>
+        <nav class = 'navigation'>
+            <button class = 'btnRegister-popup'>Register</button>
+            <button class = 'btnLogin-popup' onclick = "window.location.href = '/login';">Login</button>
+        </nav>
+    </header>
+    
+    <div class = 'page-layout'>
+        <!-- Error pop up -->
+        <div class = "error-popup">
+            {% with messages = get_flashed_messages(with_categories = true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                {% if category == 'error' %}
+                <!-- Error class, show message -->
+                <div class = 'error'>
+                    <span class = 'icon'><ion-icon name="warning-outline"></ion-icon></span>
+                    <h2>{{message}}</h2>
+                </div>
+                <!-- Success class, don't show anything -->
+                {% elif category == 'success' %}
+                <div class = 'success'></div>
+                {% endif %}
+                {% endfor %}
+            {% endif %}
+            {% endwith %}
+        </div>
+
+        <!-- class = 'form-anticlear' --> <!-- DEVELOPING USE ONLY -->
+        <form method = 'POST' autocomplete = "off" novalidate = "novalidate">
+            <div class = "wrapper">
+
+                <!-- Close Button (Top Right) -->
+                <span class = "icon-close">
+                    <ion-icon name = "close" onclick = "window.location.href = '/';"></ion-icon>
+                </span>
+                <!-- Back Button (Top Left) -->
+                <span class = "icon-back">
+                    <ion-icon name = "arrow-back-outline"></ion-icon>
+                </span>
+
+                <!-- Decide if the error message belongs to first page or second page, and go to that page -->
+                <div class = wrapper-activity>
+                    {% with messages = get_flashed_messages(with_categories = true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                        {% if category == 'notActive' %}
+                        <!-- The error belongs to something on the first page -->
+                        <script>
+                            document.querySelector('.wrapper').classList.remove('active')
+                        </script>
+                        <!-- The error belongs to something on the second page (wrapper active) -->
+                        {% elif category == 'Active'%}
+                        <script>
+                            document.querySelector('.wrapper').classList.add('active')
+                        </script>
+                        {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                    {% endwith %}
+                </div>
+
+                <div class = 'form-box register-1'>
+                    <h2>Enter Information</h2>
+                    
+                    <!-- Type: what type of input is it?, Class: bootstrap class to control form -->
+                    <!-- Name: What the attribute will be called when we pass to the backend, ID: Optional but helpful -->
+
+                    <!-- First name input box -->
+                    <div class = 'input-box'>
+                        <span class = 'icon'><ion-icon name="text-outline"></ion-icon></span>
+                        <input 
+                        type = 'text' 
+                        class = 'form-control' 
+                        id = 'firstName' 
+                        name = 'firstName' 
+                        maxlength = '25'
+                        value = '{{ cached_first_name }}'
+                        required>
+                        <label for = "firstName">First Name</label>
+                    </div>
+
+                    <!-- Last name input box -->
+                    <div class = 'input-box'>
+                        <span class = 'icon'><ion-icon name="text-outline"></ion-icon></span>
+                        <input 
+                        type = 'text' 
+                        class = 'form-control' 
+                        id = 'lastName' 
+                        name = 'lastName' 
+                        maxlength = '25'
+                        value = '{{ cached_last_name }}'
+                        required>
+                        <label for = "lastName">Last Name</label>
+                    </div>
+
+                    <!-- Graduation year input box -->
+                    <div class = 'input-box'>
+                        <span class = 'icon'><ion-icon name="calendar-number-outline"></ion-icon></span>
+                        <input 
+                        type = 'text' 
+                        class = 'form-control' 
+                        id = 'graduationYear' 
+                        name = 'graduationYear' 
+                        maxlength = '4'
+                        value = '{{ cached_graduation_year }}'
+                        required>
+                        <label for = "graduationYear">Graduation Year</label>
+                    </div>
+
+                    <!-- Student phone number input box (not required?) -->
+                    <div class = 'input-box'>
+                        <span class = 'icon'><ion-icon name="call-outline"></ion-icon></span>
+                        <input 
+                        type = 'text' 
+                        class = 'form-control' 
+                        id = 'studentPhoneNumber' 
+                        name = 'studentPhoneNumber' 
+                        maxlength = '10'
+                        value = '{{ cached_student_phone }}'
+                        required>
+                        <label for = "studentPhoneNumber">Phone Number</label>
+                    </div>
+
+                    <!-- Parent email input box -->
+                    <div class = 'input-box'>
+                        <span class = 'icon'><ion-icon name="mail"></ion-icon></span>
+                        <input 
+                        type = 'text' 
+                        class = 'form-control' 
+                        id = 'parentEmail' 
+                        name = 'parentEmail'
+                        maxlength = '100' 
+                        value = '{{ cached_parent_email }}'
+                        required>
+                        <label for = "parentEmail">Parent Email</label>
+                    </div>
+
+                    <!-- Parent phone number input box -->
+                    <div class = 'input-box'>
+                        <span class = 'icon'><ion-icon name="call-outline"></ion-icon></span>
+                        <input 
+                        type = 'text' 
+                        class = 'form-control' 
+                        id = 'parentPhoneNumber' 
+                        name = 'parentPhoneNumber' 
+                        maxlength = '10'
+                        value = '{{ cached_parent_phone }}'
+                        required>
+                        <label for = "parentPhoneNumber">Parent Phone Number</label>
+                    </div>
+                    
+                    <button type = 'button' href = '#' class = 'register2-link'>Next</button>
+                </div>
+
+                <div class = 'form-box register-2'>
+                    <h2>Create Account</h2>
+                        
+                    <!-- (Student) Email input box -->
+                    <div class = 'input-box'>
+                        <span class = 'icon'><ion-icon name="mail"></ion-icon></span>
+                        <input 
+                        type = 'text' 
+                        class = 'form-control' 
+                        id = 'studentEmail' 
+                        name = 'studentEmail' 
+                        maxlength = '100'
+                        value = '{{ cached_student_email }}'
+                        required>
+                        <label for = "studentEmail">Student Email</label>
+                    </div>
+
+                    <!-- Password input 1 -->
+                    <div class = 'input-box'>
+                        <span class = 'icon'><ion-icon name="lock-closed"></ion-icon></span>
+                        <input 
+                        type = 'password' 
+                        class = 'form-control' 
+                        id = 'password1' 
+                        name = 'password1' 
+                        maxlength = '50'
+                        value = '{{ cached_password1 }}'
+                        required>
+                        <label for = "password1">Password</label>
+                    </div>
+
+                    <!-- Password input 2 (confirm) -->
+                    <div class = 'input-box'>
+                        <span class = 'icon'><ion-icon name="lock-closed"></ion-icon></span>
+                        <input 
+                        type = 'password' 
+                        class = 'form-control' 
+                        id = 'password2' 
+                        name = 'password2' 
+                        maxlength = '50'
+                        value = '{{ cached_password2 }}'
+                        required>
+                        <label for = "password2">Confirm Password</label>
+                    </div>
+
+                    <!-- Information about what the password should be -->
+                    <div class = 'password-info'>
+                        <p>Password must be at least 8 characters & contain uppercase, lowercase, and either a numeric or symbol character.</p>
+                    </div>
+
+                    <button type = 'submit' class = 'btn'>Register</button>
+                </div>
+            </div>
+            <!-- Be able to scroll down more on register-1 -->
+            <div class = 'invisable-block'></div>
+        </form>
+    </div>
+
+    <!-- Add and remove active to wrapper (website\scripts\activClick.js) -->
+    <script>
+        const wrapper = document.querySelector('.wrapper');
+        const registerLink = document.querySelector('.register2-link');
+        const btnRegisterPopup = document.querySelector('.btnRegister-popup');
+        const btnLoginPopup = document.querySelector('.btnLogin-popup');
+        const iconBack = document.querySelector('.icon-back');
+
+        registerLink.addEventListener('click', ()=> {
+            wrapper.classList.add('active')
+        })
+
+        btnRegisterPopup.addEventListener('click', ()=> {
+            wrapper.classList.add('active-popup')
+        })
+
+        btnLoginPopup.addEventListener('click', ()=> {
+            wrapper.classList.add('active-popup')
+        })
+
+        iconBack.addEventListener('click', ()=> {
+            wrapper.classList.remove('active')
+        })
+    </script>
+
+    <!-- Needed to stop form from clearing on each submission --> <!-- DEVELOPING USE ONLY -->
+    <script src="https://cdn.jsdelivr.net/gh/akjpro/form-anticlear/base.js"></script>
+    <!-- Ion Icons -->
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+</body>
+</html>

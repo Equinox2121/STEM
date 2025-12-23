@@ -1,0 +1,104 @@
+<!-- Login Page -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset = "UTF-8">
+    <meta http-equiv = "X-UA-Compatible" content = "IE=edge">
+    <meta name = "viewport" content = "width=device-width, initial-scale=1.0">
+    <!-- Link the CSS file from the static folder -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'login-style.css')}}">
+    <script type="module" src="/static/scripts/main.js"></script>
+    <title>Login | STEM</title>
+</head>
+
+<body>
+    <header>
+        <h2 class = 'nav-logo'>STEM</h2>
+        <nav class = 'navigation'>
+            <button class = 'btnRegister-popup' onclick = "window.location.href = '/register';">Register</button>
+            <button class = 'btnLogin-popup'>Login</button>
+        </nav>
+    </header>
+    
+    <div class = 'page-layout'>
+        <!-- Error pop up -->
+        <div class = "error-popup">
+            {% with messages = get_flashed_messages(with_categories = true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                {% if category == 'error' %}
+                <!-- Error class, show message -->
+                <div class = 'error'>
+                    <span class = 'icon'><ion-icon name="warning-outline"></ion-icon></span>
+                    <h2>{{message}}</h2>
+                </div>
+                <!-- Success class, don't show anything -->
+                {% else %}
+                <div class = 'success'></div>
+                {% endif %}
+                {% endfor %}
+            {% endif %}
+            {% endwith %}
+        </div>
+
+        <form method = 'POST' autocomplete = "off" novalidate = "novalidate">
+            <div class = 'wrapper'>
+                <!-- Close Button (Top Right) -->
+                <span class = "icon-close">
+                    <ion-icon name = "close" onclick = "window.location.href = '/';"></ion-icon>
+                </span>
+
+                <div class = 'form-box login'>
+                    <h2>Login</h2>
+
+                    <!-- Type: what type of input is it?, Class: bootstrap class to control form -->
+                    <!-- Name: What the attribute will be called when we pass to the backend, ID: Optional but helpful -->
+
+                    <!-- Email input box -->
+                    <div class = 'input-box'>
+                        <span class = 'icon'><ion-icon name="mail"></ion-icon></span>
+                        <input 
+                        type = 'text' 
+                        class = 'form-control' 
+                        id = 'email' 
+                        name = 'email' 
+                        maxlength = '100'
+                        required>
+                        <label for = "email">Email</label>
+                    </div>
+
+                    <!-- Password input box -->
+                    <div class = 'input-box'>
+                        <span class = 'icon'><ion-icon name="lock-closed"></ion-icon></span>
+                        <input 
+                        type = 'password'
+                        class = 'form-control' 
+                        id = 'password' 
+                        name = 'password' 
+                        maxlength = '50'
+                        required>
+                        <label for = "password">Password</label>
+                    </div>
+
+                    <button type = 'submit' class = 'btn'>Login</button>
+
+                    <!-- Forgot password -->
+                    <div class = 'forgot-password'>
+                        <p><a href = '/empty'>Forgot password?</a></p>
+                    </div>
+
+                    <!-- Don't have an account? Register an account -->
+                    <div class = 'register'>
+                        <p>Don't have an account? <a href = '/register'>Register</a></p>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Needed to pull icons for Password and Email -->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+</body>
+</html>

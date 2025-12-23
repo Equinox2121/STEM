@@ -1,0 +1,102 @@
+<!-- Report Form Page -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset = "UTF-8">
+    <meta http-equiv = "X-UA-Compatible" content = "IE=edge">
+    <meta name = "viewport" content = "width=device-width, initial-scale=1.0">
+    <!-- Link the CSS page from the static folder -->
+    <link rel = "stylesheet" type = "text/css" href = "{{ url_for('static', filename = 'packet-style.css')}}">
+    <script type="module" src="/static/scripts/main.js"></script>
+    <title>Report Form Alert | STEM</title>
+</head>
+
+<body>
+    <header>
+        <h2 class = 'nav-logo'>STEM</h2>
+        <nav class = 'navigation'>
+            <div class = 'center'>
+                <a id = 'navigation-home' href = '/home'>Information</a>
+                <a id = 'navigation-service-log' href = '/service-log'>Service Log</a>
+                <a id = 'navigation-report-form' href = '/report-form'>Report Form</a>
+            </div>
+            <div class = 'right'>
+                <a id = 'navigation-account' href = '/account'>Account</a>
+                <a id = 'navigation-logout' href = '/logout'>Logout</a>
+            </div>
+        </nav>
+    </header>
+
+    <div class = 'page-layout'>
+        <!-- Message pop up -->
+        <div class = "message-popup">
+            {% with messages = get_flashed_messages(with_categories = true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                {% if category == 'error' %}
+                <!-- Error class, show message -->
+                <div class = 'error'>
+                    <span class = 'icon-error'><ion-icon name="warning-outline"></ion-icon></span>
+                    <h2>{{message}}</h2>
+                </div>
+                <!-- Success class, show message -->
+                {% elif category == 'success' %}
+                <div class = 'success'>
+                    <span class = 'icon-success'><ion-icon name="checkmark-circle-outline"></ion-icon></span>
+                    <h2>{{message}}</h2>
+                </div>
+                {% endif %}
+                {% endfor %}
+            {% endif %}
+            {% endwith %}
+        </div>
+        
+        <div class = 'fourth-page'>
+            
+            <!-- Back button for top right of page (goes back to service log) -->
+            <div class = 'report-form-back'>
+                <ion-icon name = "arrow-back-outline" class = "arrow-back-outline" onclick = "window.location.href = '/service-log';"></ion-icon>
+            </div>
+
+            <!-- class = 'form-anticlear' --> <!-- DEVELOPING USE ONLY -->
+            <form method = 'POST' autocomplete = "off" novalidate = "novalidate">
+
+                <div class = "report-form-alert">
+
+                    <!-- Icon and Alert Info -->
+                    <ion-icon class = "icon-alert" name="alert-circle-outline"></ion-icon>
+                    <p class = report-form-information-2><b>Before starting a report form, you must fill out a service log entry first!</b> If you have already completed a service log entry,
+                         enter the report form number below to load it or use the arrow assigned to that row on the service log page.</p>
+                        
+                    <div class = "report-form-alert-inputs">
+                        <!-- Input Report Form ID -->
+                        <div class = 'input-box'>
+                            <label for = "activityDate">Report Form Number:</label>
+                            <input 
+                            type = 'text' 
+                            class = 'reportFormID' 
+                            id = 'reportFormID' 
+                            name = 'reportFormID' 
+                            maxlength = '16'
+                            required>
+                        </div>
+                    </div>
+        
+                    <!-- Submit Button -->
+                    <div class = 'btn-submitID'>
+                        <button type = 'submit' class = 'save-btn-ID'><span>Submit </span></button>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+        <!-- Be able to scroll down further -->
+        <div class = 'invisable-block'></div>
+    </div>
+
+    <!-- Ion Icons -->
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+</body>
+</html>

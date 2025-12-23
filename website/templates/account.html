@@ -1,0 +1,330 @@
+<!-- Account Information Page & Update -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset = "UTF-8">
+    <meta http-equiv = "X-UA-Compatible" content = "IE=edge">
+    <meta name = "viewport" content = "width=device-width, initial-scale=1.0">
+    <!-- Link the CSS file from the static folder -->
+    <link rel = "stylesheet" type = "text/css" href = "{{ url_for('static', filename = 'account-style.css')}}">
+    <script type="module" src="/static/scripts/main.js"></script>
+    <title>Account | STEM</title>
+</head>
+
+<body>
+    <header>
+        <h2 class = 'nav-logo'>STEM</h2>
+        <nav class = 'navigation'>
+            <div class = 'center'>
+                <a id = 'navigation-home' href = '/home'>Information</a>
+                <a id = 'navigation-service-log' href = '/service-log'>Service Log</a>
+                <a id = 'navigation-report-form' href = '/report-form'>Report Form</a>
+            </div>
+            <div class = 'right'>
+                <a id = 'navigation-account' href = '/account'>Account</a>
+                <a id = 'navigation-logout' href = '/logout'>Logout</a>
+            </div>
+        </nav>
+    </header>
+    
+    <div class = 'page-layout'>
+        <!-- Message pop up -->
+        <div class = "message-popup">
+            {% with messages = get_flashed_messages(with_categories = true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                {% if category == 'error' %}
+                <!-- Error class, show message -->
+                <div class = 'error'>
+                    <span class = 'icon-error'><ion-icon name="warning-outline"></ion-icon></span>
+                    <h2>{{message}}</h2>
+                </div>
+                <!-- Success class, show message -->
+                {% elif category == 'success' %}
+                <div class = 'success'>
+                    <span class = 'icon-success'><ion-icon name="checkmark-circle-outline"></ion-icon></span>
+                    <h2>{{message}}</h2>
+                </div>
+                {% endif %}
+                {% endfor %}
+            {% endif %}
+            {% endwith %}
+        </div>
+
+        <form method = 'POST' autocomplete="off" novalidate="novalidate">
+            <div class = "wrapper">
+
+                <!-- Close Button (Top Right) -->
+                <span class = "icon-close">
+                    <ion-icon name = "close" onclick = "window.location.href = '/home';"></ion-icon>
+                </span>
+                <!-- Back Button (Top Left) -->
+                <span class = "icon-back" onclick = "window.location.href = '/account';">
+                    <ion-icon name = "arrow-back-outline"></ion-icon>
+                </span>
+
+                <!-- Decide if the error message belongs to first page or second page, and go to that page -->
+                <div class = wrapper-activity>
+                    {% with messages = get_flashed_messages(with_categories = true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                        {% if category == 'notActive' %}
+                        <!-- The error belongs to something on the first page -->
+                        <script>
+                            document.querySelector('.wrapper').classList.remove('active')
+                        </script>
+                        <!-- The error belongs to something on the second page (wrapper active) -->
+                        {% elif category == 'Active'%}
+                        <script>
+                            document.querySelector('.wrapper').classList.add('active')
+                        </script>
+                        {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                    {% endwith %}
+                </div>
+
+                <div class = 'form-box account-info'>
+                    <h2>Account Information</h2>
+
+                    <!-- First name -->
+                    <div class = 'input-box'>
+                        <span class = 'icon'><ion-icon name="text-outline"></ion-icon></span>
+                        <input 
+                        type = 'text' 
+                        class = 'form-control' 
+                        id = 'firstName' 
+                        name = 'firstName' 
+                        maxlength = '25'
+                        value = '{{ (user.first_name).capitalize() }}'
+                        required>
+                        <label for = "firstName">First Name:</label>
+                    </div>
+                    <!-- Adding '' to value allows spaces -->
+
+                    <!-- Last name -->
+                    <div class = 'input-box'>
+                        <span class = 'icon'><ion-icon name="text-outline"></ion-icon></span>
+                        <input 
+                        type = 'text' 
+                        class = 'form-control' 
+                        id = 'lastName' 
+                        name = 'lastName' 
+                        maxlength = '25'
+                        value = '{{ (user.last_name).capitalize() }}'
+                        required>
+                        <label for = "lastName">Last Name:</label>
+                    </div>
+
+                    <!-- Graduation year -->
+                    <div class = 'input-box'>
+                        <span class = 'icon'><ion-icon name="calendar-number-outline"></ion-icon></span>
+                        <input 
+                        type = 'text' 
+                        class = 'form-control' 
+                        id = 'graduationYear' 
+                        name = 'graduationYear' 
+                        maxlength = '4'
+                        value = {{ user.graduation_year }}
+                        required>
+                        <label for = "graduationYear">Graduation Year:</label>
+                    </div>
+
+                    <!-- Student phone number -->
+                    <div class = 'input-box'>
+                        <span class = 'icon'><ion-icon name="call-outline"></ion-icon></span>
+                        <input 
+                        type = 'text' 
+                        class = 'form-control' 
+                        id = 'studentPhoneNumber' 
+                        name = 'studentPhoneNumber' 
+                        maxlength = '10'
+                        value = {{ user.student_phone }}
+                        required>
+                        <label for = "studentPhoneNumber">Phone Number:</label>
+                    </div>
+
+                    <!-- Parent email -->
+                    <div class = 'input-box'>
+                        <span class = 'icon'><ion-icon name="mail"></ion-icon></span>
+                        <input 
+                        type = 'text' 
+                        class = 'form-control' 
+                        id = 'parentEmail' 
+                        name = 'parentEmail'
+                        maxlength = '100' 
+                        value = {{ user.parent_email }}
+                        required>
+                        <label for = "parentEmail">Parent Email:</label>
+                    </div>
+
+                    <!-- Parent phone number -->
+                    <div class = 'input-box'>
+                        <span class = 'icon'><ion-icon name="call-outline"></ion-icon></span>
+                        <input 
+                        type = 'text' 
+                        class = 'form-control' 
+                        id = 'parentPhoneNumber' 
+                        name = 'parentPhoneNumber' 
+                        value = {{ user.parent_phone }}
+                        maxlength = '10'
+                        required>
+                        <label for = "parentPhoneNumber">Parent Phone Number:</label>
+                    </div>
+                        
+                    <!-- Student Email (read only) -->
+                    <div class = 'input-box'>
+                        <span class = 'icon'><ion-icon name="mail"></ion-icon></span>
+                        <input 
+                        type = 'text' 
+                        class = 'form-control' 
+                        id = 'studentEmail' 
+                        name = 'studentEmail' 
+                        maxlength = '100'
+                        value = {{ user.student_email }}
+                        readonly>
+                        <label for = "studentEmail">Student Email:</label>
+                    </div>
+
+                    <!-- Password (read only) -->
+                    <div class = 'input-box'>
+                        <span class = 'icon'><ion-icon name="lock-closed"></ion-icon></span>
+                        <input 
+                        type = 'password' 
+                        class = 'form-control' 
+                        id = 'password' 
+                        name = 'password' 
+                        maxlength = '50'
+                        value = '{{ password_placeholder }}'
+                        readonly>
+                        <label for = "password">Password:</label>
+                    </div>
+
+                    <!-- Reset Password Link -->
+                    <div class = 'reset-password'>
+                        <p><a type = 'submit' href = '#' class = 'reset-password-link'>Reset Password</a></p>
+                    </div>
+
+                    <!-- Additional Info -->
+                    <div class = 'additional-info'>
+                        <p><a type = 'submit' href = '#' class = 'hidden-information-link'>Additional Info</a></p>
+                    </div>
+
+                    <button type = 'submit' class = 'btnActive'>Save Changes</button>
+                </div>
+
+                <div class = 'form-box reset-password-link'>
+                    <h2>Reset Password</h2>
+                        
+                    <!-- Enter old password -->
+                    <div class = 'input-box'>
+                        <span class = 'icon'><ion-icon name="lock-closed"></ion-icon></span>
+                        <input 
+                        type = 'password' 
+                        class = 'form-control' 
+                        id = 'password_old' 
+                        name = 'password_old' 
+                        maxlength = '50'
+                        required>
+                        <label for = "password_old">Current Password</label>
+                    </div>
+
+                    <!-- Enter new password  -->
+                    <div class = 'input-box'>
+                        <span class = 'icon'><ion-icon name="lock-closed"></ion-icon></span>
+                        <input 
+                        type = 'password' 
+                        class = 'form-control' 
+                        id = 'password1' 
+                        name = 'password1' 
+                        maxlength = '50'
+                        required>
+                        <label for = "password1">New Password</label>
+                    </div>
+
+                    <!-- Confirm new password -->
+                    <div class = 'input-box'>
+                        <span class = 'icon'><ion-icon name="lock-closed"></ion-icon></span>
+                        <input 
+                        type = 'password' 
+                        class = 'form-control' 
+                        id = 'password2' 
+                        name = 'password2' 
+                        maxlength = '50'
+                        required>
+                        <label for = "password2">Confirm New Password</label>
+                    </div>
+
+                    <!-- Information about what the password should be -->
+                    <div class = 'password-info'>
+                        <p>Password must be at least 8 characters & contain uppercase, lowercase, and either a numeric or symbol character.</p>
+                    </div>
+
+                    <button type = 'submit' class = 'btn'>Reset Password</button>
+                </div>
+            </div>
+            <!-- Be able to scroll down further -->
+            <div class = 'invisable-block'></div>
+        </form>
+
+        <!-- Hidden Information from Misc DB -->
+        <div class = 'hidden-account-info'>
+            <h2>Additional Info</h2>
+            {% for misc in user.user_data %}
+
+            <div class = 'info-list'>
+                <p>Misc ID:</p>
+                {{ misc.id }}
+            </div>
+
+            <div class = 'info-list'>
+                <p>Account Creation Date:</p>
+                {{ misc.account_creation_date }}
+            </div>
+
+            <div class = 'info-list'>
+                <p>Most Recent Login:</p>
+                {{ misc.most_recent_login }}
+            </div>
+
+            <div class = 'info-list'>
+                <p>Login Count:</p>
+                {{ misc.account_login_count }}
+            </div>
+
+            <div class = 'info-list'>
+                <p>Account ID:</p>
+                {{ misc.user_id }}
+            </div>
+
+            <div class = 'info-list'>
+                <p>Program Choice:</p>
+                {{ misc.program_choice }}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Add and remove active to wrapper (website\scripts\activClick.js) -->
+    <script>
+        const wrapper = document.querySelector('.wrapper');
+        const hiddenInfo = document.querySelector('.hidden-account-info');
+        const resetPasswordLink = document.querySelector('.reset-password-link');
+        const hiddenInfoLink = document.querySelector('.hidden-information-link');
+
+        resetPasswordLink.addEventListener('click', ()=> {
+            hiddenInfo.classList.remove('active')
+            wrapper.classList.add('active')
+        })
+
+        hiddenInfoLink.addEventListener('click', ()=> {
+            hiddenInfo.classList.add('active')
+        })
+    </script>
+
+    <!-- Ion Icons -->
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+</body>
+</html>

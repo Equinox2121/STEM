@@ -1,0 +1,281 @@
+<!-- Report Form Page -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset = "UTF-8">
+    <meta http-equiv = "X-UA-Compatible" content = "IE=edge">
+    <meta name = "viewport" content = "width=device-width, initial-scale=1.0">
+    <!-- Link the CSS page from the static folder -->
+    <link rel = "stylesheet" type = "text/css" href = "{{ url_for('static', filename = 'packet-style.css')}}">
+    <script type="module" src="/static/scripts/main.js"></script>
+    <title>Report Form | STEM</title>
+</head>
+
+<body>
+    <header>
+        <h2 class = 'nav-logo'>STEM</h2>
+        <nav class = 'navigation'>
+            <div class = 'center'>
+                <a id = 'navigation-home' href = '/home'>Information</a>
+                <a id = 'navigation-service-log' href = '/service-log'>Service Log</a>
+                <a id = 'navigation-report-form' href = '/report-form'>Report Form</a>
+            </div>
+            <div class = 'right'>
+                <a id = 'navigation-account' href = '/account'>Account</a>
+                <a id = 'navigation-logout' href = '/logout'>Logout</a>
+            </div>
+        </nav>
+    </header>
+
+    <div class = 'page-layout'>
+        <!-- Message pop up -->
+        <div class = "message-popup">
+            {% with messages = get_flashed_messages(with_categories = true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                {% if category == 'error' %}
+                <!-- Error class, show message -->
+                <div class = 'error'>
+                    <span class = 'icon-error'><ion-icon name="warning-outline"></ion-icon></span>
+                    <h2>{{message}}</h2>
+                </div>
+                <!-- Success class, show message -->
+                {% elif category == 'success' %}
+                <div class = 'success'>
+                    <span class = 'icon-success'><ion-icon name="checkmark-circle-outline"></ion-icon></span>
+                    <h2>{{message}}</h2>
+                </div>
+                {% endif %}
+                {% endfor %}
+            {% endif %}
+            {% endwith %}
+        </div>
+
+        <div class = 'third-page'>
+            
+            <!-- Back button for top right of page (goes back to service log) -->
+            <div class = 'report-form-back'>
+                <ion-icon name = "arrow-back-outline" class = "arrow-back-outline" onclick = "window.location.href = '/service-log';"></ion-icon>
+            </div>
+
+            <!-- class = 'form-anticlear' --> <!-- DEVELOPING USE ONLY -->
+            <form method = 'POST' autocomplete = "off" novalidate = "novalidate">
+
+                <!-- Third page inforamtion -->
+                <div class = 'information-3'>
+
+                    <!-- Page Title -->
+                    <div class = 'title-3'>
+                        <h2>STEM Program Community Service</h2>
+                        <h2>Activity Report Form</h2>
+                    </div>
+
+                    <!-- User's full name -->
+                    <div class = 'user-name'>
+                        <p><b>Full Name:</b> <u>{{ first_name }}  {{ last_name }} </u></p>
+                    </div>
+
+                    <!-- User's graduation year -->
+                    <div class = 'user-year'>
+                        <p><b>Expected Graduation Year:</b> <u>{{ graduation_year }}</u></p>
+                    </div>
+                    
+                    <!-- Second page inforamtion -->
+                    <div class = 'directions-3'>
+                        <p>Complete this report for each volunteer activity to receive full credit for participation. Some information
+                            is carried over from the service log, so only the remaining fields and the reflection section need to be completed.</p>
+                    </div>
+
+                    <!-- Organization/Acitivity title -->
+                    <div class = 'organization-title'>
+                        <b><u>Organization/Activity Information</u></b>
+                    </div>
+                    
+                    <!-- First Section of Inputs -->
+                    <div class = 'report-information-1'>
+                        
+                        <!-- Name of Organization or Activity -->
+                        <div class = 'input-box'>
+                            <label for = "nameOrganization">Name of Organization or Activity:</label>
+                            <input 
+                            type = 'text' 
+                            class = 'form-control' 
+                            id = 'nameOrganization' 
+                            name = 'nameOrganization' 
+                            maxlength = '100'
+                            value = '{{ organization }}'
+                            readonly
+                            required>
+                        </div>
+
+                        <!-- Date of Activity -->
+                        <div class = 'input-box'>
+                            <label for = "activityDate">Date of the Activity:</label>
+                            <input 
+                            type = 'text' 
+                            class = 'form-control' 
+                            id = 'activityDate' 
+                            name = 'activityDate' 
+                            maxlength = '8'
+                            value = '{{ service_date }}'
+                            readonly
+                            required>
+                        </div>
+
+                        <!-- Total Hours Earned -->
+                        <div class = 'input-box'>
+                            <label for = "totalHours">Total Hours Earned:</label>
+                            <input 
+                            type = 'integer' 
+                            class = 'form-control' 
+                            id = 'totalHours' 
+                            name = 'totalHours' 
+                            maxlength = '4'
+                            value = '{{ hours_earned }}'
+                            readonly
+                            required>
+                        </div>
+
+                        <!-- Name & Title of Contact Person -->
+                        <div class = 'input-box-2'>
+                            <label for = "contact">Name & Title of Contact Person:</label>
+                            <input 
+                            type = 'text' 
+                            class = 'form-control' 
+                            id = 'contact' 
+                            name = 'contact' 
+                            maxlength = '150'
+                            value = '{{ contact_person }}'
+                            required>
+                        </div>
+
+                        <!-- Contact Person's Contact Information -->
+                        <div class = 'input-box-2'>
+                            <label for = "contact">Contact Person's Info (Phone Number and/or Email):</label>
+                            <input 
+                            type = 'text' 
+                            class = 'form-control' 
+                            id = 'contactInfo' 
+                            name = 'contactInfo' 
+                            maxlength = '200'
+                            value = '{{ contacts_info }}'
+                            required>
+                        </div>
+                    </div>
+
+                    <!-- Reflection Title -->
+                    <div class = 'reflection-title'>
+                        <b><u>Reflection</u></b>
+                    </div>
+
+                    <!-- Second Section of Inputs -->
+                    <div class = 'report-information-2'>
+
+                        <!-- Reflection Textbox -->
+                        <div class = 'reflection-inputbox-1'>
+                            <div class = "header-label">Explain what you did.</div>
+                            <textarea 
+                            class = 'input'
+                            id = 'reflection1' 
+                            name = 'reflection1' 
+                            maxlength = '2500'
+                            placeholder = 'Enter your text'
+                            >{{ reflection1 }}</textarea>
+                        </div>
+
+                        <!-- Reflection Textbox -->
+                        <div class = 'reflection-inputbox-2'>
+                            <div class = "header-label">Describe how STEM was applied in your service.</div>
+                            <textarea 
+                            class = 'input'
+                            id = 'reflection2' 
+                            name = 'reflection2' 
+                            maxlength = '2500'
+                            placeholder = 'Enter your text'
+                            >{{ reflection2 }}</textarea>
+                        </div>
+
+                        <!-- Reflection Textbox -->
+                        <div class = 'reflection-inputbox-3'>
+                            <div class = "header-label">Are there any other comments or information you want to provide?</div>
+                            <textarea 
+                            class = 'input'
+                            id = 'reflection3' 
+                            name = 'reflection3' 
+                            maxlength = '2500'
+                            placeholder = 'Enter your text'
+                            >{{ reflection3 }}</textarea>
+                        </div>
+                    </div>
+
+                    <!-- Upload information and check for errors -->
+                    <div class = 'center-3'>
+                        <button type = 'submit' class = 'save-btn'><span>Save Changes </span></button>
+                    </div>
+
+                    <!-- Update information in the table button -->
+                    <div class = 'upload-info-button'>
+                        <button 
+                        type = 'submit' 
+                        class = 'uploadButton'
+                        name = 'uploadButton' 
+                        id = 'uploadButton' 
+                        value = 'uploadButton'>
+                        <ion-icon class = 'icon-cloud' name = "cloud-upload-outline"></ion-icon> Auto Fill</button>
+                    </div>
+
+                    <!-- The last time the page was saved -->
+                    <div class = 'last-save'>
+                        <p><b>Last Saved at:</b> <u>{{ last_save }}</u></p>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+        <!-- Be able to scroll down further -->
+        <div class = 'invisable-block'></div>
+    </div>
+
+    <!-- Save the scroll location on page reload, etc. -->
+    <script>
+        var isError = document.querySelector('.error');
+        if (isError) {
+            document.body.scrollTop = 0; // For Safari
+            document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+            localStorage.setItem('scrollpos', window.scrollY);
+        }
+        var isSuccess = document.querySelector('.success');
+        if (isSuccess) {
+            document.body.scrollTop = 0; // For Safari
+            document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+            localStorage.setItem('scrollpos', window.scrollY);
+        }
+        
+        document.addEventListener("DOMContentLoaded", function(event) { 
+            var scrollpos = localStorage.getItem('scrollpos');
+            if (scrollpos) window.scrollTo(0, scrollpos);
+        });
+
+        window.onbeforeunload = function(e) {
+            localStorage.setItem('scrollpos', window.scrollY);
+        };
+
+        // Make the upload button disapper when there is text in the textarea
+        const uploadButton = document.querySelector('.upload-info-button');
+        if (document.getElementById("reflection1").value == '')
+        {
+            uploadButton.classList.add('active')
+        }
+
+        if (document.getElementById("reflection1").value != '')
+        {
+            uploadButton.classList.remove('active')
+        }
+    </script>
+
+    <!-- Ion Icons -->
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+</body>
+</html>
